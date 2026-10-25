@@ -1,0 +1,46 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Tes hitungan CLEARWOOD MENU</title>
+<style>body{font:15px/1.5 system-ui;margin:24px;max-width:760px}li{margin:4px 0}.ok{color:#1d6b43}.bad{color:#b00020;font-weight:700}</style>
+<h1>Tes hitungan CLEARWOOD MENU</h1>
+<p id="sum"></p>
+<ul id="out"></ul>
+<script src="calc.js"></script>
+<script>
+function st(o) {
+  return Object.assign({ mode: 'fleksibel', qty: { laksa: 0, siomay: 0, bakso: 0, drinks: 0, aqua: 0 }, far: false,
+    picks: {}, fq: { laksa: 150, siomay: 150, bakso: 150, drinks: 150 }, aquaQty: 0 }, o);
+}
+function flex(q, far) { return st({ mode: 'fleksibel', qty: Object.assign({ laksa: 0, siomay: 0, bakso: 0, drinks: 0, aqua: 0 }, q), far: !!far }); }
+var cases = [
+  ['1. 20 Laksa + 20 Siomay: subtotal Rp 1.250.000', function () { return calculate(flex({ laksa: 20, siomay: 20 })).subtotal === 1250000; }],
+  ['1. Tiap baris = porsi x harga', function () { var l = calculate(flex({ laksa: 20, bakso: 10 })).lines; return l[0].sub === 750000 && l[1].sub === 275000; }],
+  ['2. ARISAN = Rp 10.000.000, service charge 0', function () { var r = calculate(st({ mode: 'arisan' })); return r.total === 10000000 && r.sc === 0; }],
+  ['3. FLEKSIBEL 2 stall di bawah minimum: 2 x Rp 300.000 (total Rp 1.850.000)', function () { var r = calculate(flex({ laksa: 20, siomay: 20 })); return r.sc === 600000 && r.total === 1850000; }],
+  ['3. Aqua bukan stall (10 Laksa + 10 Aqua = 1 stall)', function () { var r = calculate(flex({ laksa: 10, aqua: 10 })); return r.stalls === 1 && r.sc === 300000; }],
+  ['3. FLEKSIBEL mencapai Rp 10.000.000: service charge gratis', function () { var r = calculate(flex({ laksa: 100, siomay: 100, drinks: 130, aqua: 100 })); return r.subtotal === 10000000 && r.sc === 0; }],
+  ['3. Tanpa menu: total 0', function () { return calculate(flex({})).total === 0; }],
+  ['4. FOODSTALL 150 Laksa = Rp 5.625.000, tanpa peringatan, service charge 0', function () { var r = calculate(st({ mode: 'foodstall', picks: { laksa: true } })); return r.total === 5625000 && r.sc === 0 && r.issues.length === 0; }],
+  ['4. FOODSTALL Bakso 100 porsi: peringatan kurang 50', function () { var r = calculate(st({ mode: 'foodstall', picks: { bakso: true }, fq: { bakso: 100 } })); return r.issues.length === 1 && /Kurang 50 porsi/.test(r.issues[0]); }],
+  ['4. FOODSTALL Aqua 50 botol: peringatan minimal 100', function () { var r = calculate(st({ mode: 'foodstall', picks: { laksa: true }, aquaQty: 50 })); return r.issues.some(function (t) { return /minimal 100 botol/.test(t); }); }],
+  ['4. FOODSTALL Aqua 100 botol: tanpa peringatan', function () { var r = calculate(st({ mode: 'foodstall', picks: { laksa: true }, aquaQty: 100 })); return r.issues.length === 0 && r.total === 5625000 + 500000; }],
+  ['4. FOODSTALL 4 stall x 150 = Rp 17.250.000', function () { var r = calculate(st({ mode: 'foodstall', picks: { laksa: true, siomay: true, bakso: true, drinks: true } })); return r.total === 17250000 && r.sc === 0; }],
+  ['4. FOODSTALL tanpa stall dipilih: minta pilih minimal 1', function () { var r = calculate(st({ mode: 'foodstall' })); return r.issues[0] === 'Pilih minimal 1 stall.'; }],
+  ['5. ARISAN lebih dari 30 km = Rp 10.500.000', function () { var r = calculate(st({ mode: 'arisan', far: true })); return r.transport === 500000 && r.total === 10500000; }],
+  ['5. FLEKSIBEL 20 Laksa lebih dari 30 km = 750.000 + 300.000 + 500.000', function () { return calculate(flex({ laksa: 20 }, true)).total === 1550000; }],
+  ['5. Tanpa menu, lebih dari 30 km: transport 0', function () { return calculate(flex({}, true)).transport === 0; }],
+  ['Format rupiah: Rp 37.500', function () { return rp(37500) === 'Rp 37.500'; }]
+];
+var pass = 0, ul = document.getElementById('out');
+cases.forEach(function (c) {
+  var ok = false;
+  try { ok = c[1](); } catch (e) { ok = false; }
+  if (ok) pass++;
+  var li = document.createElement('li');
+  li.className = ok ? 'ok' : 'bad';
+  li.textContent = (ok ? 'LULUS  ' : 'GAGAL  ') + c[0];
+  ul.appendChild(li);
+});
+document.getElementById('sum').textContent = pass + ' dari ' + cases.length + ' tes lulus';
+document.title = (pass === cases.length ? 'LULUS ' : 'GAGAL ') + pass + '/' + cases.length;
+</script>
