@@ -18,5 +18,5 @@ Tugas 1 sampai 5 diuji otomatis di `tests.html` (buka lewat server lokal, misaln
    - Tes: buka di HP, ketiga paket dan pilihan lokasi bekerja, tidak ada teks terpotong.
 - [x] 7. **Pesan via WhatsApp.** Tombol hijau ke 0811 303 488, tautan ke 0896 5889 7759, pesan terisi otomatis (paket, menu, service charge, transport, total), dan bar tetap di bawah layar di HP.
    - Tes: tombol membuka WhatsApp dengan isi pesan yang benar di kedua nomor.
-- [x] 8. **Logo dan tampilan akhir.** Logo Clearwood, warna hitam-putih, mode terang dan gelap, tanpa geser horizontal di HP.
-   - Tes: tampilan di HP dan komputer, terang dan gelap, tanpa teks terpotong.
+- [ ] 8. **Logo dan tampilan akhir.** Logo Clearwood, warna hitam-putih, mode terang dan gelap, tanpa geser horizontal di HP.
+   - Tes: tampilan di HP dan komputer, terang dan gelap, tanpa teks terpotong. Sudah dicek di HP; komputer dan mode gelap belum.
