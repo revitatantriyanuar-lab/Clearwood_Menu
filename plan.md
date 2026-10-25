@@ -3,7 +3,7 @@
 Tujuan: mewujudkan [BRIEF.md](BRIEF.md) sebagai satu halaman web statis (HTML, CSS, dan JavaScript tanpa framework dan tanpa server).
 
 ## Pendekatan
-- **Satu file `index.html`.** Mudah dibagikan, dibuka di HP, dan tidak butuh build.
+- **Halaman statis tanpa build:** `index.html` untuk tampilan, `calc.js` untuk aturan harga dan fungsi hitung, `tests.html` untuk tes, `logo.jpg` untuk logo. Mudah dibagikan dan dibuka di HP.
 - **Hitungan terpisah dari tampilan.** Satu fungsi `calculate(state)` yang murni: terima pilihan paket, jumlah porsi, dan lokasi; kembalikan baris menu, subtotal, service charge, transport, total, dan daftar peringatan. Fungsi ini yang diuji.
 - **Semua harga dan aturan jadi konstanta** di bagian atas skrip, supaya mudah diubah saat harga berganti.
 - **Prototipe sudah ada** sebagai Artifact Claude (v9). Repo ini jadi rumah tetapnya, dan prototipe dipakai sebagai acuan perilaku.
